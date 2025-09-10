@@ -1,5 +1,6 @@
 pub struct OrderBook {
-    pub(super) symbol: String,//! BTC/USD, ETH/EUR,
+    pub(super) symbol: String,
+    //! BTC/USD, ETH/EUR,
     pub(super) bids: DashMap<u64, Arc<PriceLevel>>,
     pub(super) asks: DashMap<u64, Arc<PriceLevel>>,
     pub(super) order_locations: DashMap<OrderId, (u64, Side)>,
@@ -27,5 +28,23 @@ impl OrderBook {
             cache: PriceLevelCache::new(),
             trade_listener: None, // This is an `Option` type, so `None` is the correct starting value.
         }
+    }
+
+    //! Match a market order against the book
+    pub fn match_market_order(
+        &mut self,
+        order_id: OrderId,
+        quantity: u64,
+        side: Side
+    ) -> Result<MatchResult, OrderBookError> {
+        trace!(
+            "Order book {}: Matching market order {} for {} at side {:?}",
+            self.symbol,
+            order_id,
+            quantity,
+            side
+        );
+
+        self.match_order(order_id, side, quantity, None)
     }
 }
