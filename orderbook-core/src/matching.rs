@@ -2,7 +2,7 @@ use std::io::BTreeMap;
 use crate::lob::order::{Order, Side};
 use crate::lob::price_level::PriceLevel;
 
-
+//BTreeMap used for fast access and CRED operation
 #[derive(Debug , Default)]
 pub struct OrderBook {
     pub bids: BTreeMap<u64 ,PriceLevel>,
